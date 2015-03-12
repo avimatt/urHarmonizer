@@ -32,7 +32,6 @@ function createButtons()
 		btn:SetWidth(ScreenWidth()*width)
 		btn:SetHeight(btnHeight)
 		coord = coords[i]
-		DPrint(coord[1])
 		btn:SetAnchor("BOTTOMLEFT", UIParent, "BOTTOMLEFT", coord[1]*(ScreenWidth()/2), coord[2]*btnHeightPadded)
 		btn:Show()
 		
