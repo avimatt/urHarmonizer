@@ -1,4 +1,5 @@
 FreeAllRegions()
+DPrint("")
 
 function main()
 	createPage1()
@@ -28,6 +29,7 @@ end
 
 function switchPage(region)
 	SetPage(region.id + 1)
+	DPrint("Page " .. region.id + 1)
 end
 
 -- BUTTONS --
