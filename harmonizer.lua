@@ -1,7 +1,21 @@
 FreeAllRegions()
 
 function main()
+	createPage1()
+--[[function for the singer page 
+		Put this at the top of your function
+			SetPage(2)
+			FreeAllRegions() --]]
 	createButtons()
+	SetPage(1)
+end
+
+function npow2ratio(n)
+	local npow = 1
+	while npow < n do 
+		npow = npow*2
+	end
+	return n/npow
 end
 
 function makeGreen(region)
@@ -12,11 +26,16 @@ function makeWhite(region)
 	region.t:SetSolidColor(255,255,255,255)
 end
 
+function switchPage(region)
+	SetPage(region.id + 1)
+end
+
 -- BUTTONS --
 
 btns = {}
 
 function createButtons()
+	SetPage(3)
 	labels = {"Unison","ii","II","iii","III","IV","v","V","vi","VI","vii","VII","Octave"}
 	coords = {{0,0},{0,1},{1,1},{0,2},{1,2},{1,3},{0,4},{1,4},{0,5},{1,5},{0,6},{1,6},{0,7}}
 	widths = {1,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,1}
@@ -43,6 +62,41 @@ function createButtons()
 		
 		btn:EnableInput(true)
 		btns[i] = btn
+	end
+end
+
+
+-- First Page Buttons -- 
+page1btns = {}
+
+function createPage1()
+	SetPage(1)
+	FreeAllRegions()
+	
+	labels = {"Singer", "Soprano", "Alto", "Tenor", "Baritone", "Bass"}
+	coords = {.7, .6, .5, .4, .3, .2}
+	
+	WriteURLData("http://www.natomasarts.com/wp/wp-content/uploads/2011/07/microphone_black_background2.jpg", "mic.jpg")
+	background = Region()
+	background.t = background:Texture(DocumentPath("mic.jpg"))
+	background:SetWidth(ScreenWidth())
+	background:SetHeight(ScreenHeight())
+	background.t:SetTexCoord(0, npow2ratio(background.t:Width()), npow2ratio(background.t:Height()), 0)
+	background:Show()
+
+	for i=1,6 do 
+		local btn = Region()
+		btn.t1 = btn:TextLabel()
+		btn.id = i
+		btn.t1:SetLabel(labels[i])
+		btn.t1:SetFont("Arial")
+		btn.t1:SetFontHeight(20)
+		btn:SetAnchor("BOTTOMLEFT", UIParent, "BOTTOMLEFT", ScreenWidth()*.2, ScreenHeight()*coords[i])
+		btn:Handle("OnTouchDown", switchPage)
+		btn:EnableInput(true)
+		btn:Show()
+		
+		page1btns[i] = btn
 	end
 end
 
