@@ -27,9 +27,15 @@ function makeWhite(region)
 	region.t:SetSolidColor(255,255,255,255)
 end
 
-function switchPage(region)
+function switchPageOnPress(region)
 	SetPage(region.id + 1)
 	DPrint("Page " .. region.id + 1)
+end
+
+function switchPageOnSwipe(region, x, y, dx, dy)
+	if dx > 25 then
+		SetPage(1)
+	end
 end
 
 -- BUTTONS --
@@ -41,6 +47,15 @@ function createButtons()
 	labels = {"Unison","ii","II","iii","III","IV","v","V","vi","VI","vii","VII","Octave"}
 	coords = {{0,0},{0,1},{1,1},{0,2},{1,2},{1,3},{0,4},{1,4},{0,5},{1,5},{0,6},{1,6},{0,7}}
 	widths = {1,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,1}
+	
+	bckgrnd = Region()
+	bckgrnd:SetWidth(ScreenWidth())
+	bckgrnd:SetHeight(ScreenHeight())
+	bckgrnd:SetLayer("BACKGROUND")
+	bckgrnd.t = bckgrnd:Texture(0, 0, 0, 0)
+	bckgrnd:EnableInput(true)
+	bckgrnd:Handle("OnMove", switchPageOnSwipe)
+	bckgrnd:Show()
 
 	btnHeightPadded = ScreenHeight() / 8.0
 	btnHeight = btnHeightPadded - 4
@@ -94,7 +109,7 @@ function createPage1()
 		btn.t1:SetFont("Arial")
 		btn.t1:SetFontHeight(20)
 		btn:SetAnchor("BOTTOMLEFT", UIParent, "BOTTOMLEFT", ScreenWidth()*.2, ScreenHeight()*coords[i])
-		btn:Handle("OnTouchDown", switchPage)
+		btn:Handle("OnTouchDown", switchPageOnPress)
 		btn:EnableInput(true)
 		btn:Show()
 		
