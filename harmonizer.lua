@@ -104,12 +104,14 @@ function createPage1()
 
 	for i=1,6 do 
 		local btn = Region()
+		btn:SetHeight(40)
 		btn.t1 = btn:TextLabel()
 		btn.id = i
+		btn.t = btn:Texture(50,50,50,100)
 		btn.t1:SetLabel(labels[i])
 		btn.t1:SetFont("Arial")
 		btn.t1:SetFontHeight(20)
-		btn:SetAnchor("BOTTOMLEFT", UIParent, "BOTTOMLEFT", ScreenWidth()*.2, ScreenHeight()*coords[i])
+		btn:SetAnchor("BOTTOMLEFT", UIParent, "BOTTOMLEFT", ScreenWidth()*.1, ScreenHeight()*coords[i])
 		btn:Handle("OnTouchDown", switchPageOnPress)
 		btn:EnableInput(true)
 		btn:Show()
