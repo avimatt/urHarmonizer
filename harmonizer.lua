@@ -132,6 +132,9 @@ function createPage2()
 	background.t:SetTexCoord(0, npow2ratio(background.t:Width()), npow2ratio(background.t:Height()), 0)
 	background:Show()
 	
+	background:EnableInput(true)
+	background:Handle("OnMove", switchPageOnSwipe)
+	
 	--Singing Lips
 	rLips = Region()
 	WriteURLData("http://singingtipsblog.com/wp-content/uploads/2012/07/iStock_000002032735XSmall.jpg","Lips.jpg")
