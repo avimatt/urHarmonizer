@@ -3,6 +3,7 @@ DPrint("")
 
 function main()
 	createPage1()
+	createPage2()
 --[[function for the singer page 
 		Put this at the top of your function
 			SetPage(2)
@@ -115,6 +116,45 @@ function createPage1()
 		
 		page1btns[i] = btn
 	end
+end
+
+function createPage2()
+	SetPage(2)
+	FreeAllRegions()
+	
+	--Microphone
+	background = Region()
+	background.t = background:Texture(DocumentPath("mic.jpg"))
+	background:SetWidth(ScreenWidth())
+	background:SetHeight(ScreenHeight())
+	background.t:SetTexCoord(0, npow2ratio(background.t:Width()), npow2ratio(background.t:Height()), 0)
+	background:Show()
+	
+	--Singing Lips
+	rLips = Region()
+	WriteURLData("http://singingtipsblog.com/wp-content/uploads/2012/07/iStock_000002032735XSmall.jpg","Lips.jpg")
+	rLips.t = rLips:Texture(DocumentPath("Lips.jpg"))
+	rLips:SetWidth(425)
+	rLips:SetHeight(282)
+	rLips:Show()
+	rLips.t:SetTexCoord(0, npow2ratio(rLips.t:Width()), npow2ratio(rLips.t:Height()), 0.0)
+	rLips:SetAnchor("TOPLEFT", background, "TOPLEFT", 0, 0)
+	rLips:EnableInput(true)
+	--rLips:Handle("OnTouchDown", switchPage)
+
+	--Singer text label
+	rtitle = Region()
+	rtitle:SetWidth(background:Width()/3)
+	rtitle:SetHeight(55)
+	rtitle:SetAnchor("CENTER",background,"BOTTOMLEFT",ScreenWidth()/3,ScreenHeight()/3)
+	rtitle.tl = rtitle:TextLabel()
+	rtitle.tl:SetLabel("Singer")
+	rtitle.tl:SetFontHeight(50)
+	rtitle.tl:SetColor(255,255,255,255)
+	rtitle:Show()
+	rtitle:EnableInput(true)
+	rtitle:Handle("OnTouchDown", switchPage)
+	
 end
 
 main()
