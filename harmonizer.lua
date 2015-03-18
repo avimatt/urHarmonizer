@@ -24,18 +24,6 @@ function npow2ratio(n)
 	return n/npow
 end
 
--- Select harmony function
-function makeGreen(region)
-	region.t:SetSolidColor(50,200,50,255)
-	-- In the future this will connect to a pitch changing function
-end
-
--- Unselect harmony function
-function makeWhite(region)
-	region.t:SetSolidColor(255,255,255,255)
-	-- In the future this will detach the current flowbox
-end
-
 -- Navigate from page one function
 function switchPageOnPress(region)
 	if(region.id + 1 < 4) then 
@@ -61,10 +49,27 @@ function muteSound(region)
 	DPrint("Mute")
 end
 
--- BUTTONS --
-
-btns = {}
 -- Harmony Page 
+-- Buttons --
+btns = {}
+selectedButton = 0
+
+-- Select harmony function
+function selectButton(btn)
+	btn.t:SetSolidColor(50,200,50,255)
+	if selectedButton ~= 0 then
+		deselectButton(btns[selectedButton])
+	end
+	selectedButton = btn.id
+	-- In the future this will connect to a pitch changing function
+end
+
+-- Unselect harmony function
+function deselectButton(btn)
+	btn.t:SetSolidColor(255,255,255,255)
+	-- In the future this will detach the current flowbox
+end
+
 function createButtons()
 	SetPage(3)
 	labels = {"Unison","ii","II","iii","III","IV","v","V","vi","VI","vii","VII","Octave"}
@@ -85,6 +90,7 @@ function createButtons()
 	
 	for i=1,13 do
 		local btn = Region()
+		btn.id = i
 		btn.t = btn:Texture("Button-64.png")
 		btn.t:SetBlendMode("BLEND")
 		width = widths[i]
@@ -98,7 +104,7 @@ function createButtons()
 		btn.tl:SetLabel(labels[i])
 		btn.tl:SetFontHeight(24)
 		
-		btn:Handle("OnTouchDown", makeGreen)
+		btn:Handle("OnTouchDown", selectButton)
 		
 		btn:EnableInput(true)
 		btns[i] = btn
