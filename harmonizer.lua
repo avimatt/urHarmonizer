@@ -1,13 +1,17 @@
+--[[ Work Contributions
+	  - Avi Mattenson: Wrote the navigation page code
+	  - Cheng Chung Wang: Outlined the work to be done in the future and looked into ways to acheive this 
+	  - Daphna Raz: Wrote the singer page code
+	  - Joseph Constantakis: Wrote the harmony page code 
+
+	  EVERYONE: contributed greatly to the idea's formulation ]]--
+
 FreeAllRegions()
 DPrint("")
 
 function main()
 	createPage1()
 	createPage2()
---[[function for the singer page 
-		Put this at the top of your function
-			SetPage(2)
-			FreeAllRegions() --]]
 	createButtons()
 	SetPage(1)
 end
@@ -20,29 +24,47 @@ function npow2ratio(n)
 	return n/npow
 end
 
+-- Select harmony function
 function makeGreen(region)
 	region.t:SetSolidColor(50,200,50,255)
+	-- In the future this will connect to a pitch changing function
 end
 
+-- Unselect harmony function
 function makeWhite(region)
 	region.t:SetSolidColor(255,255,255,255)
+	-- In the future this will detach the current flowbox
 end
 
+-- Navigate from page one function
 function switchPageOnPress(region)
-	SetPage(region.id + 1)
-	DPrint("Page " .. region.id + 1)
+	if(region.id + 1 < 4) then 
+		SetPage(region.id + 1)
+	--[[ In the future we will populate these pages with pages that look like page 3 for t
+	he different singers but the buttons on these pages will be connected to different 
+	pitch shifting function --]]
+	else 
+		DPrint("These pages haven't been created yet")
+	end
 end
 
+-- Navigate back to page one function
 function switchPageOnSwipe(region, x, y, dx, dy)
 	if dx > 25 then
 		SetPage(1)
 	end
 end
 
+function muteSound(region)
+	-- find an image to display when muted
+	-- in the future this will mute everything (I believe we will try to network this capability)
+	DPrint("Mute")
+end
+
 -- BUTTONS --
 
 btns = {}
-
+-- Harmony Page 
 function createButtons()
 	SetPage(3)
 	labels = {"Unison","ii","II","iii","III","IV","v","V","vi","VI","vii","VII","Octave"}
@@ -85,6 +107,7 @@ end
 
 
 -- First Page Buttons -- 
+-- Navigation Page to choose what voice part you are or whether you are the singer
 page1btns = {}
 
 function createPage1()
@@ -120,6 +143,7 @@ function createPage1()
 	end
 end
 
+-- Singer Page 
 function createPage2()
 	SetPage(2)
 	FreeAllRegions()
@@ -130,10 +154,9 @@ function createPage2()
 	background:SetWidth(ScreenWidth())
 	background:SetHeight(ScreenHeight())
 	background.t:SetTexCoord(0, npow2ratio(background.t:Width()), npow2ratio(background.t:Height()), 0)
-	background:Show()
-	
 	background:EnableInput(true)
 	background:Handle("OnMove", switchPageOnSwipe)
+	background:Show()
 	
 
 	--Mute button
@@ -142,10 +165,11 @@ function createPage2()
 	rMute.t = rMute:Texture(DocumentPath("mute.jpg"))
 	rMute:SetWidth(ScreenWidth()/4)
 	rMute:SetHeight(ScreenWidth()/4)
-	rMute:Show()
 	rMute.t:SetTexCoord(0, npow2ratio(rMute.t:Width()), npow2ratio(rMute.t:Height()), 0.0)
 	rMute:SetAnchor("CENTER", background, "CENTER", 1 - ScreenWidth()/4, 0)
 	rMute:EnableInput(true)
+	rMute:Handle("OnTouchDown", muteSound)
+	rMute:Show()
 
 
 	--Singer text label
@@ -158,9 +182,6 @@ function createPage2()
 	rtitle.tl:SetFontHeight(25)
 	rtitle.tl:SetColor(255,255,255,255)
 	rtitle:Show()
-	rtitle:EnableInput(true)
-	rtitle:Handle("OnTouchDown", switchPage)
-	
 end
 
 main()
