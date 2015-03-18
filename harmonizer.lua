@@ -135,6 +135,7 @@ function createPage2()
 	background:EnableInput(true)
 	background:Handle("OnMove", switchPageOnSwipe)
 	
+<<<<<<< HEAD
 	--Mute button
 	rMute = Region()
 	WriteURLData("http://us.cdn3.123rf.com/168nwm/valentint/valentint1403/valentint140301927/26770069-golden-shiny-icon-on-black-background--internet-button.jpg","mute.jpg")
@@ -145,6 +146,18 @@ function createPage2()
 	rMute.t:SetTexCoord(0, npow2ratio(rMute.t:Width()), npow2ratio(rMute.t:Height()), 0.0)
 	rMute:SetAnchor("CENTER", background, "CENTER", 1 - ScreenWidth()/4, 0)
 	rMute:EnableInput(true)
+=======
+	--Singing Lips
+	rLips = Region()
+	WriteURLData("http://singingtipsblog.com/wp-content/uploads/2012/07/iStock_000002032735XSmall.jpg","Lips.jpg")
+	rLips.t = rLips:Texture(DocumentPath("Lips.jpg"))
+	rLips:SetWidth(425)
+	rLips:SetHeight(282)
+	rLips:Show()
+	rLips.t:SetTexCoord(0, npow2ratio(rLips.t:Width()), npow2ratio(rLips.t:Height()), 0.0)
+	rLips:SetAnchor("TOPLEFT", background, "TOPLEFT", 0, 0)
+	rLips:EnableInput(true)
+>>>>>>> be4dc7efd218c02da0c633b6e7a44d2877e2ff66
 	--rLips:Handle("OnTouchDown", switchPage)
 
 	--Singer text label
