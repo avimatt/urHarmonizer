@@ -107,7 +107,7 @@ function createButtons()
 		
 		btn.tl = btn:TextLabel()
 		btn.tl:SetLabel(labels[i])
-		btn.tl:SetFontHeight(24)
+		btn.tl:SetFontHeight(30)
 		btn.tl:SetColor(0,0,0,255)
 		
 		btn:Handle("OnTouchDown", selectButton)
