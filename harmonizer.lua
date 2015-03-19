@@ -56,6 +56,9 @@ selectedButton = 0
 
 -- Select harmony function
 function selectButton(btn)
+	if btn.id == selectedButton then 
+		return 
+	end
 	btn.t:SetSolidColor(50,200,50,255)
 	if selectedButton ~= 0 then
 		deselectButton(btns[selectedButton])
@@ -72,7 +75,7 @@ end
 
 function createButtons()
 	SetPage(3)
-	labels = {"Unison","ii","II","iii","III","IV","v","V","vi","VI","vii","VII","Octave"}
+	labels = {"Unison","b2","2","b3","3","4","b5","5","b6","6","b7","7","Octave"}
 	coords = {{0,0},{0,1},{1,1},{0,2},{1,2},{1,3},{0,4},{1,4},{0,5},{1,5},{0,6},{1,6},{0,7}}
 	widths = {1,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,1}
 	
@@ -87,22 +90,25 @@ function createButtons()
 
 	btnHeightPadded = ScreenHeight() / 8.0
 	btnHeight = btnHeightPadded - 4
-	
+	btnWidthPadded = ScreenWidth()
+	btnWidth = btnWidthPadded - 4
+
 	for i=1,13 do
 		local btn = Region()
 		btn.id = i
-		btn.t = btn:Texture("Button-64.png")
+		btn.t = btn:Texture(240, 240, 240, 255)
 		btn.t:SetBlendMode("BLEND")
 		width = widths[i]
-		btn:SetWidth(ScreenWidth()*width)
+		btn:SetWidth(btnWidth*width)
 		btn:SetHeight(btnHeight)
 		coord = coords[i]
-		btn:SetAnchor("BOTTOMLEFT", UIParent, "BOTTOMLEFT", coord[1]*(ScreenWidth()/2), coord[2]*btnHeightPadded)
+		btn:SetAnchor("BOTTOMLEFT", UIParent, "BOTTOMLEFT", (coord[1]/2)*btnWidthPadded, coord[2]*btnHeightPadded)
 		btn:Show()
 		
 		btn.tl = btn:TextLabel()
 		btn.tl:SetLabel(labels[i])
 		btn.tl:SetFontHeight(24)
+		btn.tl:SetColor(0,0,0,255)
 		
 		btn:Handle("OnTouchDown", selectButton)
 		
