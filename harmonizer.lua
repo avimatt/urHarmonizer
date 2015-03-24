@@ -31,13 +31,27 @@ end
 function switchPageOnSwipe(region, x, y, dx, dy)
 	if dx > 25 then
 		SetPage(1)
+		DPrint("")
 		dac:RemovePullLink(0,sinosc,0)
 	end
 end
+
+isMuted = 0
 function muteSound(region)
 	-- find an image to display when muted
 	-- in the future this will mute everything (I believe we will try to network this capability)
-	DPrint("Mute")
+	if isMuted == 0 then
+		isMuted = 1
+		DPrint("Mute On")
+		return
+	end
+	isMuted = 0
+	unMuteSound(region)
+	
+end
+
+function unMuteSound(region)
+	DPrint("Mute Off")
 end
 -- Harmony Page
 -- Buttons --
@@ -69,7 +83,7 @@ function deselectButton(btn)
 end
 function createButtons()
 	SetPage(3)
-	labels = {"Unison","b2","2","b3","3","4","b5","5","b6","6","b7","7","Octave"}
+	labels = {"Unison","m2","2","m3","3","4","d5","5","m6","6","m7","7","Octave"}
 	coords = {{0,0},{0,1},{1,1},{0,2},{1,2},{1,3},{0,4},{1,4},{0,5},{1,5},{0,6},{1,6},{0,7}}
 	widths = {1,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,1}
 	bckgrnd = Region()
@@ -150,7 +164,7 @@ function createPage2()
 	background:Show()
 	--Mute button
 	rMute = Region()
-	WriteURLData("http://us.cdn3.123rf.com/168nwm/valentint/valentint1403/valentint140301927/26770069-golden-shiny-icon-on-black-background--internet-button.jpg","mute.jpg")
+	WriteURLData("http://us.cdn4.123rf.com/168nwm/valentint/valentint1403/valentint140301612/26769642-golden-shiny-icon-on-black-background--internet-button.jpg","mute.jpg")
 	rMute.t = rMute:Texture(DocumentPath("mute.jpg"))
 	rMute:SetWidth(ScreenWidth()/4)
 	rMute:SetHeight(ScreenWidth()/4)
