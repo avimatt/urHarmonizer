@@ -1,6 +1,7 @@
 FreeAllRegions()
 FreeAllFlowboxes()
 DPrint("")
+
 function main()
 	createPage1()
 	createPage2()
@@ -8,6 +9,7 @@ function main()
 	createFlowboxes()
 	SetPage(1)
 end
+
 function npow2ratio(n)
 	local npow = 1
 	while npow < n do
@@ -15,11 +17,13 @@ function npow2ratio(n)
 	end
 	return n/npow
 end
+
 -- Navigate from page one function
 function switchPageOnPress(region)
 	if(region.id + 1 < 4) then
 		SetPage(region.id + 1)
-		dac:SetPullLink(0,sinosc,0)
+		createFlowboxes()
+		
 		--[[ In the future we will populate these pages with pages that look like page 3 for t
 		he different singers but the buttons on these pages will be connected to different
 		pitch shifting function --]]
@@ -27,12 +31,13 @@ function switchPageOnPress(region)
 		DPrint("These pages haven't been created yet")
 	end
 end
+
 -- Navigate back to page one function
 function switchPageOnSwipe(region, x, y, dx, dy)
 	if dx > 25 then
 		SetPage(1)
 		DPrint("")
-		dac:RemovePullLink(0,sinosc,0)
+		FreeAllFlowboxes()
 	end
 end
 
@@ -53,6 +58,7 @@ end
 function unMuteSound(region)
 	DPrint("Mute Off")
 end
+
 -- Harmony Page
 -- Buttons --
 btns = {}
@@ -62,7 +68,7 @@ currentfrequency = 1
 function selectButton(btn)
 	if btn.id == selectedButton then
 		deselectButton(btns[selectedButton])
-		push:Push(currentfrequency)
+		push2:Push(0)
 		selectedButton = 0
 		return
 	end
@@ -71,9 +77,8 @@ function selectButton(btn)
 		deselectButton(btns[selectedButton])
 	end
 	selectedButton = btn.id
-	pitch = (selectedButton-7)/6
-	push:Push(currentfrequency+pitch)
-	-- DPrint(pit)
+	push2:Push(-1* btn.shift)
+	DPrint(-1* btn.shift)
 	-- In the future this will connect to a pitch changing function
 end
 -- Unselect harmony function
@@ -86,6 +91,7 @@ function createButtons()
 	labels = {"Unison","m2","2","m3","3","4","d5","5","m6","6","m7","7","Octave"}
 	coords = {{0,0},{0,1},{1,1},{0,2},{1,2},{1,3},{0,4},{1,4},{0,5},{1,5},{0,6},{1,6},{0,7}}
 	widths = {1,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,1}
+	shift = {0, -1/48, -1/24, -3/48, -1/12, -5/48, -6/48, -7/48, -8/48, -9/48, -10/48, -11/48, -12/48}
 	bckgrnd = Region()
 	bckgrnd:SetWidth(ScreenWidth())
 	bckgrnd:SetHeight(ScreenHeight())
@@ -101,6 +107,7 @@ function createButtons()
 	for i=1,13 do
 		local btn = Region()
 		btn.id = i
+		btn.shift = shift[i]
 		btn.t = btn:Texture(240, 240, 240, 255)
 		btn.t:SetBlendMode("BLEND")
 		width = widths[i]
@@ -184,23 +191,20 @@ function createPage2()
 	rtitle.tl:SetColor(255,255,255,255)
 	rtitle:Show()
 end
+
 function createFlowboxes()
-	--currentfrequency = freq2norm(500000)
-	--currentfrequency = 1
 	dac = FBDac
+	mic = FBMic
 	push = FlowBox(FBPush)
 	push2 = FlowBox(FBPush)
 	pull = FlowBox(FBPull)
-	sinosc = FlowBox(FBSinOsc)
 	pitshift = FlowBox(FBPitShift)
-	--dac.In:SetPull(sinosc.Out)
-	push.Out:SetPush(pitshift.In)
 
+	--push.Out:SetPush(pitshift.In)
 	push2.Out:SetPush(pitshift.Shift)
-	pitshift.Out:SetPush(sinosc.Freq)
-	--push.Out:SetPush(sinosc.Freq)
+	--FBAccel.X:SetPush(pitshift.Shift);
 
-	push:Push(currentfrequency)
-	push2:Push(-1)
+	mic.Out:SetPush(pitshift.In)
+	pitshift.Out:SetPush(dac.In)
 end
 main()
