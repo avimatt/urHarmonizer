@@ -77,7 +77,8 @@ function selectButton(btn)
 		deselectButton(btns[selectedButton])
 	end
 	selectedButton = btn.id
-	push2:Push(-1* btn.shift)
+	shift = (math.pow(btn.shift,2)*0.000505) + (btn.shift*0.02853) + 0.000209627
+	push2:Push(shift)
 	DPrint(-1* btn.shift)
 	-- In the future this will connect to a pitch changing function
 end
@@ -91,7 +92,7 @@ function createButtons()
 	labels = {"Unison","m2","2","m3","3","4","d5","5","m6","6","m7","7","Octave"}
 	coords = {{0,0},{0,1},{1,1},{0,2},{1,2},{1,3},{0,4},{1,4},{0,5},{1,5},{0,6},{1,6},{0,7}}
 	widths = {1,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,1}
-	shift = {0, -1/48, -1/24, -3/48, -1/12, -5/48, -6/48, -7/48, -8/48, -9/48, -10/48, -11/48, -12/48}
+	shift = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}
 	bckgrnd = Region()
 	bckgrnd:SetWidth(ScreenWidth())
 	bckgrnd:SetHeight(ScreenHeight())
@@ -195,15 +196,11 @@ end
 function createFlowboxes()
 	dac = FBDac
 	mic = FBMic
-	push = FlowBox(FBPush)
 	push2 = FlowBox(FBPush)
-	pull = FlowBox(FBPull)
 	pitshift = FlowBox(FBPitShift)
 
-	--push.Out:SetPush(pitshift.In)
 	push2.Out:SetPush(pitshift.Shift)
-	--FBAccel.X:SetPush(pitshift.Shift);
-
+ 
 	mic.Out:SetPush(pitshift.In)
 	pitshift.Out:SetPush(dac.In)
 end
