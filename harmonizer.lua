@@ -6,7 +6,7 @@ function main()
 	createPage1()
 	createPage2()
 	createButtons()
-	createFlowboxes()
+	--createFlowboxes()
 	SetPage(1)
 end
 
@@ -64,35 +64,43 @@ end
 btns = {}
 selectedButton = 0
 currentfrequency = 1
+
 -- Select harmony function
 function selectButton(btn)
 	if btn.id == selectedButton then
 		deselectButton(btns[selectedButton])
-		push2:Push(0)
+		--push2:Push(0)
 		selectedButton = 0
+		FreeAllFlowboxes()
 		return
 	end
 	btn.t:SetSolidColor(50,200,50,255)
 	if selectedButton ~= 0 then
 		deselectButton(btns[selectedButton])
+	else 
+		createFlowboxes()
 	end
+	
 	selectedButton = btn.id
-	shift = (math.pow(btn.shift,2)*0.000505) + (btn.shift*0.02853) + 0.000209627
+	--shift = (math.pow(btn.shift,2)*0.000505) + (btn.shift*0.02853) + 0.000209627
+	shift = (math.pow((btn.id - 1),2)*0.000505) + ((btn.id - 1)*0.02853) + 0.000209627
 	push2:Push(shift)
-	DPrint(-1* btn.shift)
 	-- In the future this will connect to a pitch changing function
 end
+
 -- Unselect harmony function
 function deselectButton(btn)
 	btn.t:SetSolidColor(255,255,255,255)
 	-- In the future this will detach the current flowbox
 end
+
 function createButtons()
 	SetPage(3)
 	labels = {"Unison","m2","2","m3","3","4","d5","5","m6","6","m7","7","Octave"}
 	coords = {{0,0},{0,1},{1,1},{0,2},{1,2},{1,3},{0,4},{1,4},{0,5},{1,5},{0,6},{1,6},{0,7}}
 	widths = {1,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,1}
-	shift = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}
+	--shift = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}
+	
 	bckgrnd = Region()
 	bckgrnd:SetWidth(ScreenWidth())
 	bckgrnd:SetHeight(ScreenHeight())
@@ -105,10 +113,11 @@ function createButtons()
 	btnHeight = btnHeightPadded - 4
 	btnWidthPadded = ScreenWidth()
 	btnWidth = btnWidthPadded - 4
+	
 	for i=1,13 do
 		local btn = Region()
 		btn.id = i
-		btn.shift = shift[i]
+		--btn.shift = shift[i]
 		btn.t = btn:Texture(240, 240, 240, 255)
 		btn.t:SetBlendMode("BLEND")
 		width = widths[i]
@@ -126,14 +135,17 @@ function createButtons()
 		btns[i] = btn
 	end
 end
+
 -- First Page Buttons --
 -- Navigation Page to choose what voice part you are or whether you are the singer
 page1btns = {}
+
 function createPage1()
 	SetPage(1)
 	FreeAllRegions()
 	labels = {"Singer", "Soprano", "Alto", "Tenor", "Baritone", "Bass"}
 	coords = {.7, .6, .5, .4, .3, .2}
+	
 	WriteURLData("http://www.natomasarts.com/wp/wp-content/uploads/2011/07/microphone_black_background2.jpg", "mic.jpg")
 	background = Region()
 	background.t = background:Texture(DocumentPath("mic.jpg"))
@@ -141,6 +153,7 @@ function createPage1()
 	background:SetHeight(ScreenHeight())
 	background.t:SetTexCoord(0, npow2ratio(background.t:Width()), npow2ratio(background.t:Height()), 0)
 	background:Show()
+	
 	for i=1,6 do
 		local btn = Region()
 		btn:SetHeight(40)
@@ -157,11 +170,13 @@ function createPage1()
 		page1btns[i] = btn
 	end
 end
+
 -- Singer Page
 function createPage2()
 	SetPage(2)
 	FreeAllRegions()
-	--Microphone
+	
+	-- Microphone
 	background = Region()
 	background.t = background:Texture(DocumentPath("mic.jpg"))
 	background:SetWidth(ScreenWidth())
@@ -170,7 +185,8 @@ function createPage2()
 	background:EnableInput(true)
 	background:Handle("OnMove", switchPageOnSwipe)
 	background:Show()
-	--Mute button
+	
+	-- Mute button
 	rMute = Region()
 	WriteURLData("http://us.cdn4.123rf.com/168nwm/valentint/valentint1403/valentint140301612/26769642-golden-shiny-icon-on-black-background--internet-button.jpg","mute.jpg")
 	rMute.t = rMute:Texture(DocumentPath("mute.jpg"))
@@ -181,7 +197,8 @@ function createPage2()
 	rMute:EnableInput(true)
 	rMute:Handle("OnTouchDown", muteSound)
 	rMute:Show()
-	--Singer text label
+	
+	-- Singer text label
 	rtitle = Region()
 	rtitle:SetWidth(background:Width()/3)
 	rtitle:SetHeight(55)
