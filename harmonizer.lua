@@ -18,6 +18,16 @@ function npow2ratio(n)
 	return n/npow
 end
 
+function shiftBySemitones(semitones)
+	if semitones > 0 then
+		return (0.000505*math.pow(semitones,2)) + (semitones*0.02853) + 0.000209627
+	elseif semitones < 0 then
+		return (0.000307315*math.pow(semitones,2)) + (semitones*0.0278033) - 0.00161947
+	else
+		return 0
+	end
+end
+
 -- Navigate from page one function
 function switchPageOnPress(region)
 	if(region.id + 1 < 4) then
@@ -77,10 +87,9 @@ function selectButton(btn)
 		deselectButton(btns[selectedButton])
 	end
 	selectedButton = btn.id
-	shift = (math.pow(btn.shift,2)*0.000505) + (btn.shift*0.02853) + 0.000209627
+	shift = shiftBySemitones(-btn.shift)
+	
 	push2:Push(shift)
-	DPrint(-1* btn.shift)
-	-- In the future this will connect to a pitch changing function
 end
 -- Unselect harmony function
 function deselectButton(btn)
