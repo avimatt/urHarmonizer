@@ -1,3 +1,14 @@
+--[[ Work Contributions
+	All members interacted with many different parts of the code and idea, but here are the 
+	general areas of responsibility so far:
+	  - Avi Mattenson: Wrote the navigation page code including main menu and swiping
+	  - Cheng Chung Wang: Wrote the flowbox code and handled previous submissions
+	  - Daphna Raz: Wrote the singer page code, hand-tuned pitches for bass harmonizer
+	  - Joseph Constantakis: Wrote the harmony page code, determined equations for harmonizing to the right pitches
+
+	  EVERYONE: contributed to the idea's formulation 
+]]--
+
 FreeAllRegions()
 FreeAllFlowboxes()
 DPrint("")
